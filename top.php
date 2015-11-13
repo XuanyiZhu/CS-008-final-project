@@ -22,7 +22,7 @@
         $path_parts = pathinfo($phpSelf);
         ?>
 
-<!--########################Facebook share link##################################-->
+        <!--########################Facebook share link##################################-->
     <div id="fb-root"></div>
     <script>(function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -45,7 +45,7 @@
             }
         }(document, 'script', 'twitter-wjs');</script>
 
-<!--########################slide pictures##################################-->
+    <!--########################slide pictures##################################-->
     <title>JQuery Slider Example</title>
 
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -65,7 +65,7 @@
         });
     </script>
 
-<!--########################read from csv file##################################-->
+    <!--########################read from csv file##################################-->
     <?php
 // Sample code to open a plain text file
 
@@ -75,7 +75,7 @@
         $debug = true;
     }
 
-    $myFileName = "Food";
+    $myFileName = "theatre";
 
     $fileExt = ".csv";
 
@@ -132,8 +132,6 @@
 <!-- ################ body section ######################### -->
 
 <?php
-include "mainNav.php";
-include "header.php";
 print '<body id="' . $path_parts['filename'] . '">';
 ?>
 
