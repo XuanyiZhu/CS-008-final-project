@@ -38,6 +38,7 @@ $uvmstudent = "";
 $adult = "";
 $senior = "";
 $seat = "";
+$price = "";
 //%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%^%
 //
 // SECTION: 1d form error flags
@@ -63,7 +64,8 @@ $dataRecord = array();
 // SECTION: 2 Process for when the form is submitted
 //
 
-if (isset($_POST["btnAddToCart"])) {
+if (isset($_POST["btnSubmit"])) {
+
 
     if (!securityCheck(true)) {
         $msg = "<p>Sorry you cannot access this page. ";
@@ -71,8 +73,9 @@ if (isset($_POST["btnAddToCart"])) {
         die($msg);
     }
     $_SESSION["j"] = $_SESSION["j"] + 1;
-    $email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);
+    $_SESSION["price" . $_SESSION["j"]] = $price;
     $_SESSION["showId" . $_SESSION["j"]] = $showId;
+    $email = filter_var($_POST["txtEmail"], FILTER_SANITIZE_EMAIL);
     $_SESSION["email" . $_SESSION["j"]] = $email;
     $time = htmlentities($_POST["radTime"], ENT_QUOTES, "UTF-8");
     $_SESSION["time" . $_SESSION["j"]] = $time;
@@ -134,6 +137,34 @@ if (isset($_POST["btnAddToCart"])) {
 //
 // build a message to display on the screen in section 3a and to mail
 // to the person filling out the form (section 2g).
+        $message = '<h2>Your information.</h2>';
+        foreach ($_POST as $key => $value) {
+            if ($key != 'btnSubmit') {
+                $message .= "<p>";
+                $camelCase = preg_split('/(?=[A-Z])/', substr($key, 3));
+                foreach ($camelCase as $one) {
+                    $message .= $one . " ";
+                }
+                $message .= " = " . htmlentities($value, ENT_QUOTES, "UTF-8") . "</p>";
+            }
+        }
+
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//
+// SECTION: 2g Mail to user
+//
+// Process for mailing a message which contains the forms data
+// the message was built in section 2f.
+        $to = $email; // the person who filled out the form
+        $cc = "";
+        $bcc = "";
+        $from = "Ticket Information <theatreacademic@uvm.edu>";
+
+// subject of mail should make sense to your form
+        $todaysDate = strftime("%x");
+        $subject = "Your Ticket: " . $todaysDate;
+
+        $mailed = sendMail($to, $cc, $bcc, $from, $subject, $message);
     } // end form is valid
 } // ends if form was submitted.
 //#############################################################################
@@ -154,7 +185,7 @@ if (isset($_POST["btnAddToCart"])) {
     // 
     // If its the first time coming to the form or there are errors we are going
     // to display the form.
-    if (isset($_POST["btnAddToCart"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
+    if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked with: end body submit
         print "<h1>Your Request has ";
 
         if (!$mailed) {
@@ -270,6 +301,9 @@ if (isset($_POST["btnAddToCart"])) {
                 value="5">5</option>
         </select>
 
+
+
+
         <fieldset>
             <legend>Choose a time: </legend>
             <label class="radio"></label>
@@ -281,17 +315,28 @@ if (isset($_POST["btnAddToCart"])) {
                id="rad' . $oneRecord[$i] . '" 
                name="radTime" 
                value="' . $oneRecord[$i] . '"';
+?>
 
-                        if ($time == $oneRecord[$i]) {
-                            print 'checked';
-                        }
-                        print'tabindex = "330">' . $oneRecord[$i];
-
-                        print'<p>$time: ' . $time = $oneRecord[$i] . '</p>';
+                       <?php if ($time == $oneRecord[$i]) print 'checked'?>
+                      <?php  print'tabindex = "330">' . $oneRecord[$i];
+//
+                        print'<p>$time: ' . $time  . '</p>';
                         print'<p>$oneRecord: ' . "$oneRecord[$i]" . '</p>';
+                        if ($time == $oneRecord[$i]) {
+                             print'<p>true:</p>';
+                        }else
+                        {
+                            print"<p>false</p>";
+                        }
                     }
                 }
             }
+            
+            foreach ($records as $oneRecord) {
+                if ($oneRecord[0] == $showId) {
+                    $price = $oneRecord[6];
+                }
+                }
             ?>
         </fieldset>
 
@@ -312,7 +357,7 @@ if (isset($_POST["btnAddToCart"])) {
                    name="radSeat" 
                    value="Center"
                    <?php if ($seat == "Center") print 'checked' ?>
-                   tabindex="330">Center
+                   tabindex="330">Center (+ $4)
 
             <input type="radio" 
                    id="radSeatSideRight" 
@@ -332,9 +377,10 @@ if (isset($_POST["btnAddToCart"])) {
                    autofocus>
         </label>
 
+
         <fieldset class="buttons">
             <legend></legend>
-            <input type="submit" id="btnAddToCart" name="btnAddToCart" value="Add to cart" tabindex="900" class="button">
+            <input type="submit" id="btnSubmit" name="btnSubmit" value="Add to cart" tabindex="900" class="button">
         </fieldset>
     </form>
 </article>
