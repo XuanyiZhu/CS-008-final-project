@@ -7,17 +7,14 @@ include 'top.php';
     $UVMStudentDiscount = 3;
     $seniorDiscount = 3;
     $centerPrice = 4;
-
     if ($_SESSION["j"] == 0) {
         print"<p>Your cart is empty.</p>";
     }
-
     print"<ol>";
     for ($j = 1; $j <= $_SESSION["j"]; $j++) {
         foreach ($records as $oneRecord) {
             if ($_SESSION["showId" . $j] == $oneRecord[0]) {
                 print "<li><a href='show.php?id=" . $_SESSION["showId" . $j] . "'>" . '<img src="img/' . $oneRecord[8] . '">' . "</a></li>";
-
                 print"<li>Time: " . $_SESSION["time" . $j] . "</li>";
                 if ($_SESSION["adult" . $j] != "0") {
                     print"<li>" . $_SESSION["adult" . $j] . " Adult ticket(s)</li>";
@@ -30,19 +27,19 @@ include 'top.php';
                 }
                 print"<li>Prefer seat: " . $_SESSION["seat" . $j] . "</li>";
                 if ($_SESSION["seat" . $j] != "Center"){
-                $_SESSION["totalPrice" . $_SESSION["j"]] = $_SESSION["price" . $_SESSION["j"]] * $_SESSION["adult" . $_SESSION["j"]] 
-                        + ($_SESSION["price" . $_SESSION["j"]] - $UVMStudentDiscount) * $_SESSION["uvmstudent" . $_SESSION["j"]]
-                        + ($_SESSION["price" . $_SESSION["j"]] - $seniorDiscount) * $_SESSION["senior" . $_SESSION["j"]];
+                $_SESSION["totalPrice" . $j] = $_SESSION["price" . $j] * $_SESSION["adult" . $j] 
+                        + ($_SESSION["price" . $j] - $UVMStudentDiscount) * $_SESSION["uvmstudent" . $j]
+                        + ($_SESSION["price" . $j] - $seniorDiscount) * $_SESSION["senior" .$j];
                 } else {
-                    $_SESSION["totalPrice" . $_SESSION["j"]] = $_SESSION["price" . $_SESSION["j"]] * $_SESSION["adult" . $_SESSION["j"]] 
-                        + ($_SESSION["price" . $_SESSION["j"]] - $UVMStudentDiscount) * $_SESSION["uvmstudent" . $_SESSION["j"]]
-                        + ($_SESSION["price" . $_SESSION["j"]] - $seniorDiscount) * $_SESSION["senior" . $_SESSION["j"]] 
-                        + $centerPrice * ($_SESSION["uvmstudent" . $_SESSION["j"]] + $_SESSION["senior" . $_SESSION["j"]] 
-                        + $_SESSION["adult" . $_SESSION["j"]]);
+                    $_SESSION["totalPrice". $j] = $_SESSION["price" . $j] * $_SESSION["adult" . $j] 
+                        + ($_SESSION["price". $j] - $UVMStudentDiscount) * $_SESSION["uvmstudent" . $j]
+                        + ($_SESSION["price" .$j] - $seniorDiscount) * $_SESSION["senior" . $j] 
+                        + $centerPrice * ($_SESSION["uvmstudent" . $j] + $_SESSION["senior" .$j] 
+                        + $_SESSION["adult" . $j]);
                 }
-
-                print"<li>Price: $  " . $_SESSION["totalPrice" . $_SESSION["j"]] . "</li>";
-
+                print"adult".$_SESSION["adult" . $j];
+                print"price for each: ".$_SESSION["price". $j];
+                print"<li>Price: $  " . $_SESSION["totalPrice" . $j] . "</li>";
                 ?>
                 <li>
                     <form action="cart.php"
@@ -58,8 +55,8 @@ include 'top.php';
         }
         if (isset($_POST["btnRemove"])) {
             session_unset($_SESSION["j"]);
-//            echo "It has been remove from cart.";
-//            die();
+            echo "It has been remove from cart.";
+            die();
         }
     }
     print"</ol>";
@@ -78,9 +75,7 @@ include 'top.php';
         $fileExt = ".csv";
         $filename = $myFileName . $fileExt;
         $file = fopen($filename, 'a+');
-
         for ($j = 1; $j <= $_SESSION["j"]; $j++) {
-
             $ticket[] = $_SESSION["email" . $_SESSION["j"]];
             foreach ($records as $oneRecord) {
                 if ($_SESSION["showId" . $j] == $oneRecord[0]) {
@@ -97,13 +92,14 @@ include 'top.php';
     fputcsv($file, $ticket);
     fclose($file);
     ?>
-    <form action="cart.php"
+    <form 
           method="post"
           id="frmPay">
         <legend></legend>
         <input type="submit" id="btnPay" name="btnPay" value="Pay" tabindex="900" class="button">
 
     </form>
+                
 </article>
 </body>
 <?php include "footer.php"; ?>
