@@ -215,11 +215,9 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
             }
             ?>"
                   method="post"
-                  id="frmBuy">
-                <fieldset>
-                <fieldset>
-                <label for="lstAdult">Adult:
-                    
+                  class="dark-matter2">
+                <label for="lstAdult">
+                    <span>Adult: </span>
                     <select id="lstAdult"
                             name="lstAdult"
                             tabindex="400" >
@@ -237,8 +235,7 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
                             value="5">5</option>
                     </select>
                 </label>
-                </fieldset>
-                    <fieldset>
+
                 <label for="lstUvmStudent">
                     <span>UVM Students: </span>
                     <select id="lstUvmStudent"
@@ -258,8 +255,7 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
                             value="5">5</option>
                     </select>
                 </label>
-                    </fieldset>
-                    <fieldset>
+
                 <label for="lstSenior">
                     <span>Senior: </span>
                     <select id="lstSenior"
@@ -277,10 +273,9 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
                             value="4">4</option>
                         <option <?php if ($senior == "5") print" selected "; ?>
                             value="5">5</option>
-                </label>    </select>
+              </select>
                 </label>
-                    </fieldset>
-                    <fieldset>
+
                 <label class="radio">Choose a time:</label>
                 <ol class="buyTicketTime">
                     <?php
@@ -289,7 +284,7 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
                             for ($i = 10; $oneRecord[$i] != ""; $i++) {
                                 print"<li class='buyTicketLi'>";
                                 print'<input type="radio"
-                        id="rad' . $oneRecord[$i] . '"
+                        class="rad' . $oneRecord[$i] . '"
                         name="radTime"
                         value="' . $oneRecord[$i] . '"';
                                 ?>
@@ -302,8 +297,7 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
                     }
                     ?>
                 </ol>
-                    </fieldset>
-                    <fieldset>
+
                 <label class="radio">Seat:</label>
                 <div class="radSeat">
                     <ol class="buyTicketSeat">
@@ -329,20 +323,18 @@ if (isset($_POST["btnSubmit"]) AND empty($errorMsg)) { // closing of if marked w
                                                            tabindex="330">Side Right</li>
                     </ol>
                 </div>
-                    </fieldset>
-                <label for="txtEmail" class="required">Email:
-                    
+                <label for="txtEmail" class="required">
+                    <span>Email: </span>
                     <input type="text" id="txtEmail" name="txtEmail"
                            value="<?php print $email; ?>" 
                            tabindex="120" maxlength="70" placeholder="Enter a valid email address"
                            onfocus="this.select()"
                            autofocus>
                 </label>
-                </fieldset>
-                <fieldset>
+
                 <input type="submit" id="btnSubmit" name="btnSubmit" value="Add to cart" tabindex="900" class="button">
 
-                </fieldset>
+
             </form>
         </div>
     </div>
